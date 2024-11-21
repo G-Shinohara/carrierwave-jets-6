@@ -30,28 +30,7 @@ module CarrierWave
 
 end
 
-if defined?(Jets)
-
-  module CarrierWave
-    class Turbine < Jets::Turbine
-      initializer "carrierwave.setup_paths" do |app|
-        CarrierWave.root = Jets.root.to_s
-        CarrierWave.tmp_path = "/tmp/carrierwave"
-        CarrierWave.configure do |config|
-          config.cache_dir = "/tmp/carrierwave/uploads/tmp"
-        end
-      end
-
-      initializer "carrierwave.active_record" do
-        ActiveSupport.on_load :active_record do
-          require 'carrierwave/orm/activerecord'
-        end
-      end
-    end
-  end
-
-elsif defined?(Rails)
-
+if defined?(Jets) || defined?(Rails)
   module CarrierWave
     class Railtie < Rails::Railtie
       initializer "carrierwave.setup_paths" do |app|
