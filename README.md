@@ -20,17 +20,10 @@ It works well with Rack based web applications, such as Ruby on Rails.
 * Please report bugs on the [issue tracker](http://github.com/carrierwaveuploader/carrierwave/issues) but read the "getting help" section in the wiki first.
 
 ## Installation
-
-Install the latest release:
-
-```
-$ gem install carrierwave
-```
-
 In Rails, add it to your Gemfile:
 
 ```ruby
-gem 'carrierwave', '~> 3.0'
+gem 'carrierwave-jets-6', github: 'G-Shinohara/carrierwave-jets-6'
 ```
 
 Finally, restart the server to apply the changes.
