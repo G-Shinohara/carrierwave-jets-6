@@ -30,13 +30,33 @@ module CarrierWave
 
 end
 
-if defined?(Jets) || defined?(Rails)
+if defined?(Jets)
+
+  module CarrierWave
+    class Railtie < Rails::Railtie
+      initializer "carrierwave.setup_paths" do |app|
+        CarrierWave.root = Jets.root.to_s
+        CarrierWave.tmp_path = "/tmp/carrierwave"
+        CarrierWave.configure do |config|
+          config.cache_dir = "/tmp/carrierwave/uploads/tmp"
+        end
+      end
+
+      initializer "carrierwave.active_record" do
+        ActiveSupport.on_load :active_record do
+          require 'carrierwave/orm/activerecord'
+        end
+      end
+    end
+  end
+
+elsif defined?(Rails)
+
   module CarrierWave
     class Railtie < Rails::Railtie
       initializer "carrierwave.setup_paths" do |app|
         CarrierWave.root = Rails.root.join(Rails.public_path).to_s
         CarrierWave.base_path = ENV['RAILS_RELATIVE_URL_ROOT']
-        CarrierWave.tmp_path = '/tmp'
         available_locales = Array(app.config.i18n.available_locales || [])
         if available_locales.blank? || available_locales.include?(:en)
           I18n.load_path.prepend(File.join(File.dirname(__FILE__), 'carrierwave', 'locale', "en.yml"))
